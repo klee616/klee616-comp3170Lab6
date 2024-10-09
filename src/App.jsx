@@ -35,13 +35,22 @@ function App() {
     })
   }
 
+
+  const taskListUI = tasks.map((task, index) =>  (
+      <div key={`ID-${index}-${task.id}`} className='task-box' data-id={task.id} >
+        <input type="checkbox" name={`task-${task.id}`} id={`task-${task.id}`} checked={task.isFinish} onChange={handleTaskChange} />
+        <label htmlFor={`task-${task.id}`}>{task.task}</label>
+        <button onClick={() => removeTask(task.id)}>Delete</button>
+      </div>
+    ))
+
   function handleTaskChange(e) {
     const parentObj = e.target.parentElement;
     const taskId = parentObj.dataset.id;
     console.log(taskId);
     console.log(e.target.checked)
-    const update = tasks.map(taskData => 
-      taskData.id == taskId ? {...taskData, isFinish:e.target.checked}: taskData
+    const update = tasks.map(taskData =>
+      taskData.id == taskId ? { ...taskData, isFinish: e.target.checked } : taskData
     );
     console.log(update)
     setTasks(update);
@@ -61,21 +70,12 @@ function App() {
       <div>
         <h2>You have {tasks.length} tasks remaining</h2>
         <div className='task-list'>
-          {
-            tasks && tasks.map((task, index) => {
-              return (<>
-                <div className='task-box' data-id={task.id} key={index}>
-                  <input type="checkbox" name={`task-${task.id}`} id={`task-${task.id}`} checked={task.isFinish} onChange={handleTaskChange} />
-                  <label for={`task-${task.id}`}>{task.task}</label>
-                  <button onClick={() => removeTask(task.id)}>Delete</button>
-                </div>
-              </>);
-            })
-          }
+          {taskListUI}
         </div>
       </div>
     </>
   )
+
 }
 
 export default App
