@@ -68,7 +68,7 @@ function App() {
         </form>
       </div>
       <div>
-        <h2>You have {tasks.length} tasks remaining</h2>
+        <h2>You have {tasks.filter((taskData) => taskData.isFinish == false).length} tasks remaining</h2>
         <div className='task-list'>
           {taskListUI}
         </div>
