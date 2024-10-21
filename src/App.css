@@ -89,3 +89,30 @@ form{
 input[type=checkbox]:checked + label {
   text-decoration: line-through;
 }
+
+.btn-style1{
+  border: 0.1rem solid #888;
+  padding: 0.5rem;
+  width: 100px;
+}
+
+.button-container{
+  
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.planner{
+  
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 1.5rem;
+  min-width: 350px;
+}

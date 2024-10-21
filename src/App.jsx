@@ -6,6 +6,7 @@ import { initialTasks } from './fixtures'
 
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
+  const [filterString, setFilterString] = useState('all');
   const [initialTaskData, setInitialTaskData] = useState({
     id: nanoid(),
     task: '',
@@ -36,13 +37,13 @@ function App() {
   }
 
 
-  const taskListUI = tasks.map((task, index) =>  (
-      <div key={`ID-${index}-${task.id}`} className='task-box' data-id={task.id} >
-        <input type="checkbox" name={`task-${task.id}`} id={`task-${task.id}`} checked={task.isFinish} onChange={handleTaskChange} />
-        <label htmlFor={`task-${task.id}`}>{task.task}</label>
-        <button onClick={() => removeTask(task.id)}>Delete</button>
-      </div>
-    ))
+  const taskListUI = tasks.filter(taskFilter).map((task, index) => (
+    <div key={`ID-${index}-${task.id}`} className='task-box' data-id={task.id} >
+      <input type="checkbox" name={`task-${task.id}`} id={`task-${task.id}`} checked={task.isFinish} onChange={handleTaskChange} disabled={task.isFinish} />
+      <label htmlFor={`task-${task.id}`}>{task.task}</label>
+      <button className='btn-style1' onClick={() => removeTask(task.id)}>Remove</button>
+    </div>
+  ))
 
   function handleTaskChange(e) {
     const parentObj = e.target.parentElement;
@@ -55,22 +56,42 @@ function App() {
     console.log(update)
     setTasks(update);
   }
+  function taskFilter(task, index) {
+    if (filterString == "all") {
+      return task;
+    }
+    if (filterString == "completed" && task.isFinish) {
+      return task;
+    }
+    if (filterString == "pending" && !task.isFinish) {
+      return task;
+    }
+
+  }
 
   return (
     <>
       <div>
         <h1>Daily Planner</h1>
       </div>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <input className='task-input' type="text" name="task" value={taskData.task} onChange={onChangeTask} />
-          <ButtonPrimary name="Save" />
-        </form>
-      </div>
-      <div>
-        <h2>You have {tasks.filter((taskData) => taskData.isFinish == false).length} tasks remaining</h2>
-        <div className='task-list'>
-          {taskListUI}
+      <div className='planner'>
+        <div>
+          <form onSubmit={handleSubmit}>
+            <input className='task-input' type="text" name="task" value={taskData.task} onChange={onChangeTask} />
+            <ButtonPrimary name="Save" />
+          </form>
+        </div>
+        <div className='button-container'>
+          <button className='btn-style1' onClick={() => setFilterString('all')}>All</button>
+          <button className='btn-style1' onClick={() => setFilterString('completed')}>Completed</button>
+          <button className='btn-style1' onClick={() => setFilterString('pending')}>Pending</button>
+
+        </div>
+        <div>
+          <h2>You have {tasks.filter((taskData) => taskData.isFinish == false).length} tasks remaining</h2>
+          <div className='task-list'>
+            {taskListUI}
+          </div>
         </div>
       </div>
     </>
@@ -79,3 +100,4 @@ function App() {
 }
 
 export default App
+
